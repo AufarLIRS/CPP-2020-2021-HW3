@@ -1,50 +1,26 @@
 #include "rational.h"
 #include "gcd.h"
-#include <limits>
 
 Rational::Rational(int numerator, int denominator)
 {
-  bool minus = 0;
+  if (numerator == 0)
+    denominator = 1;
+  int gcd = GCD::gcd(std::abs(numerator), std::abs(denominator));
   if (numerator < 0 && denominator < 0)
   {
-    numerator = -numerator;
-    denominator = -denominator;
+    numerator_ = -numerator / gcd;
+    denominator_ = -denominator / gcd;
   }
-  else if (numerator < 0)
+  else if (numerator < 0 || denominator < 0)
   {
-    numerator = -numerator;
-    minus = 1;
+    numerator_ = numerator < 0 ? numerator / gcd : -numerator / gcd;
+    denominator_ = denominator < 0 ? -denominator / gcd : denominator / gcd;
   }
-  else if (denominator < 0)
+  else
   {
-    denominator = -denominator;
-    minus = 1;
+    numerator_ = numerator / gcd;
+    denominator_ = denominator / gcd;
   }
-  if (numerator == denominator)
-  {
-    numerator = 1;
-    denominator = 1;
-  }
-  else if (numerator == 0)
-    denominator = 1;
-  int gcd = GCD::gcd(numerator, denominator);
-  numerator_ = minus ? -numerator / gcd : numerator / gcd;
-  denominator_ = denominator / gcd;
-}
-Rational::Rational(double d)
-{
-  int numerator = (int)d > std::numeric_limits<int>::max() ? 0 : (int)d;
-  double denominator = 1;
-  d -= (int)d;
-  d *= 10;
-  while ((int)denominator <= std::numeric_limits<int>::max() / 10 &&
-         numerator <= std::numeric_limits<int>::max() / 10 - (int)d)
-  {
-    denominator *= 10;
-    numerator = numerator * 10 + (int)d % 10;
-    d *= 10;
-  }
-  *this = Rational(numerator, denominator);
 }
 Rational::operator double() const
 {
@@ -52,12 +28,12 @@ Rational::operator double() const
 }
 Rational& Rational::operator++()
 {
-  numerator_++;
+  numerator_ += denominator_;
   return *this;
 }
 Rational& Rational::operator--()
 {
-  numerator_--;
+  numerator_ -= denominator_;
   return *this;
 }
 Rational Rational::operator++(int)
@@ -85,27 +61,11 @@ Rational operator+(const Rational& a, const Rational& b)
   return Rational(a.numerator_ * (b.denominator_ / gcd) + b.numerator_ * (a.denominator_ / gcd),
                   a.denominator_ * (b.denominator_ / gcd));
 }
-double operator+(const Rational& a, double b)
-{
-  return (double)a + b;
-}
-double operator+(double a, const Rational& b)
-{
-  return a + (double)b;
-}
 Rational operator-(const Rational& a, const Rational& b)
 {
   int gcd = GCD::gcd(a.denominator_, b.denominator_);
   return Rational(a.numerator_ * (b.denominator_ / gcd) - b.numerator_ * (a.denominator_ / gcd),
                   a.denominator_ * (b.denominator_ / gcd));
-}
-double operator-(const Rational& a, double b)
-{
-  return (double)a - b;
-}
-double operator-(double a, const Rational& b)
-{
-  return a - (double)b;
 }
 Rational operator*(const Rational& a, const Rational& b)
 {
@@ -113,99 +73,9 @@ Rational operator*(const Rational& a, const Rational& b)
   int gcd2 = GCD::gcd(b.numerator_, a.denominator_);
   return Rational((a.numerator_ / gcd1) * (b.numerator_ / gcd2), (a.denominator_ / gcd2) * (b.denominator_ / gcd1));
 }
-double operator*(const Rational& a, double b)
-{
-  return (double)a * b;
-}
-double operator*(double a, const Rational& b)
-{
-  return a * (double)b;
-}
 Rational operator/(const Rational& a, const Rational& b)
 {
   int gcd1 = GCD::gcd(a.numerator_, b.numerator_);
   int gcd2 = GCD::gcd(b.denominator_, a.denominator_);
   return Rational((a.numerator_ / gcd1) * (b.denominator_ / gcd2), (a.denominator_ / gcd2) * (b.numerator_ / gcd1));
-}
-double operator/(const Rational& a, double b)
-{
-  return (double)a / b;
-}
-double operator/(double a, const Rational& b)
-{
-  return a / (double)b;
-}
-bool operator==(const Rational& a, const Rational& b)
-{
-  return a.numerator_ == b.numerator_ && a.denominator_ == b.denominator_;
-}
-bool operator==(const Rational& a, int b)
-{
-  return a.denominator_ == 1 && a.numerator_ == b;
-}
-bool operator==(int a, const Rational& b)
-{
-  return b == a;
-}
-bool operator!=(const Rational& a, const Rational& b)
-{
-  return !(a == b);
-}
-bool operator!=(const Rational& a, int b)
-{
-  return !(a == b);
-}
-bool operator!=(int a, const Rational& b)
-{
-  return !(a == b);
-}
-bool operator<(const Rational& a, const Rational& b)
-{
-  int gcd1 = GCD::gcd(a.numerator_, b.numerator_);
-  int gcd2 = GCD::gcd(a.denominator_, b.denominator_);
-  return (a.numerator_ / gcd1) * (b.denominator_ / gcd2) < (b.numerator_ / gcd1) * (a.denominator_ / gcd2);
-}
-bool operator<(const Rational& a, int b)
-{
-  return a.numerator_ < b * a.denominator_;
-}
-bool operator<(int a, const Rational& b)
-{
-  return a * b.denominator_ < b.numerator_;
-}
-bool operator>(const Rational& a, const Rational& b)
-{
-  return b < a && a != b;
-}
-bool operator>(const Rational& a, int b)
-{
-  return a < b && a != b;
-}
-bool operator>(int a, const Rational& b)
-{
-  return a < b && a != b;
-}
-bool operator<=(const Rational& a, const Rational& b)
-{
-  return a < b && a == b;
-}
-bool operator<=(const Rational& a, int b)
-{
-  return a < b && a == b;
-}
-bool operator<=(int a, const Rational& b)
-{
-  return a < b && a == b;
-}
-bool operator>=(const Rational& a, const Rational& b)
-{
-  return !(a < b);
-}
-bool operator>=(const Rational& a, int b)
-{
-  return !(a < b);
-}
-bool operator>=(int a, const Rational& b)
-{
-  return !(a < b);
 }
