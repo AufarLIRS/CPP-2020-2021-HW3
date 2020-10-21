@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 struct Rational
 {
@@ -10,63 +11,55 @@ public:
   int getNumerator() const
   {
     return numerator_;
-  };
-  void setNumerator(int value)
-  {
-    numerator_ = value;
   }
+
   int getDenominator() const
   {
     return denominator_;
   }
-  void setDenominator(int value)
+
+public:
+  void Reduce()
   {
-    if (getNumerator() == 0)
-    {
-      denominator_ = 1;
-    }
-    else
-    {
-      if (value < 0)
-      {
-        setNumerator(getNumerator() * -1);
-        value *= -1;
-      }
-      for (int i = 2; i <= value; i++)
-      {
-        while ((getNumerator() % i == 0) && (value % i == 0))
-        {
-          setNumerator((getNumerator() / i));
-          value /= i;
-        }
-      }
-      denominator_ = std::abs(value);
-    }
+    auto a = std::abs(std::__gcd(getDenominator(), getNumerator()));
+    numerator_ /= a;
+    denominator_ /= a;
   }
 
 public:
   Rational(int x, int y = 1)
   {
-    setNumerator(x);
-    setDenominator(y);
+    if (y < 0)
+    {
+      x *= -1;
+      y *= -1;
+    }
+
+    numerator_ = x;
+    denominator_ = y;
+    Reduce();
   }
 
 public:
-  Rational operator+(Rational x)
+  operator double()
+  {
+    return (double)this->getNumerator() / this->getDenominator();
+  }
+  Rational operator+(Rational& x)
   {
     return Rational(this->getNumerator() * x.getDenominator() + x.getNumerator() * this->getDenominator(),
                     this->getDenominator() * x.getDenominator());
   }
-  Rational operator-(Rational x)
+  Rational operator-(Rational& x)
   {
     return Rational(this->getNumerator() * x.getDenominator() - x.getNumerator() * this->getDenominator(),
                     this->getDenominator() * x.getDenominator());
   }
-  Rational operator*(Rational x)
+  Rational operator*(Rational& x)
   {
     return Rational(this->getNumerator() * x.getNumerator(), this->getDenominator() * x.getDenominator());
   }
-  Rational operator/(Rational x)
+  Rational operator/(Rational& x)
   {
     if (this->getDenominator() == 0 || x.getDenominator() == 0 || this->getNumerator() == 0 || x.getNumerator() == 0)
     {
@@ -79,7 +72,7 @@ public:
   }
   Rational& operator++()
   {
-    this->setNumerator(this->getNumerator() + this->getDenominator());
+    this->numerator_ = (this->getNumerator() + this->getDenominator());
     return *this;
   }
   Rational operator++(int)
@@ -90,7 +83,7 @@ public:
   }
   Rational& operator--()
   {
-    this->setNumerator(this->getNumerator() - this->getDenominator());
+    this->numerator_ = (this->getNumerator() - this->getDenominator());
     return *this;
   }
   Rational operator--(int)
@@ -99,30 +92,6 @@ public:
     --(*this);
     return tmp;
   }
-  bool operator>(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() > x.getNumerator() * this->getDenominator());
-  }
-  bool operator<(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() < x.getNumerator() * this->getDenominator());
-  }
-  bool operator==(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() == x.getNumerator() * this->getDenominator());
-  }
-  bool operator!=(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() != x.getNumerator() * this->getDenominator());
-  }
-  bool operator<=(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() <= x.getNumerator() * this->getDenominator());
-  }
-  bool operator>=(Rational& x)
-  {
-    return (this->getNumerator() * x.getDenominator() >= x.getNumerator() * this->getDenominator());
-  }
 };
 std::ostream& operator<<(std::ostream& out, const Rational& x)
 {
@@ -130,95 +99,25 @@ std::ostream& operator<<(std::ostream& out, const Rational& x)
 
   return out;
 }
-double operator+(Rational& x, double& y)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a + y;
-}
-double operator+(double& y, Rational& x)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a + y;
-}
-double operator-(Rational& x, double& y)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a - y;
-}
-double operator-(double& y, Rational& x)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return y - a;
-}
-double operator*(Rational& x, double& y)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a * y;
-}
-double operator*(double& y, Rational& x)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a * y;
-}
-double operator/(Rational& x, double& y)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return a / y;
-}
-double operator/(double& y, Rational& x)
-{
-  double a = x.getNumerator() / x.getDenominator();
-  return y / a;
-}
-bool operator>(Rational& x, int& y)
-{
-  return (x.getNumerator() > x.getDenominator() * y);
-}
-bool operator>(int& y, Rational& x)
-{
-  return (x.getDenominator() * y > x.getNumerator());
-}
-bool operator<(Rational& x, int& y)
-{
-  return (x.getNumerator() < x.getDenominator() * y);
-}
-bool operator<(int& y, Rational& x)
-{
-  return (x.getDenominator() * y < x.getNumerator());
-}
-bool operator==(Rational& x, int& y)
-{
-  return (x.getNumerator() == x.getDenominator() * y);
-}
-bool operator==(int& y, Rational& x)
-{
-  return (x.getNumerator() == x.getDenominator() * y);
-}
-bool operator!=(Rational& x, int& y)
-{
-  return (x.getNumerator() != x.getDenominator() * y);
-}
-bool operator!=(int& y, Rational& x)
-{
-  return (x.getNumerator() != x.getDenominator() * y);
-}
-bool operator<=(Rational& x, int& y)
-{
-  return (x.getNumerator() <= x.getDenominator() * y);
-}
-bool operator<=(int& y, Rational& x)
-{
-  return (x.getDenominator() * y <= x.getNumerator());
-}
-bool operator>=(Rational& x, int& y)
-{
-  return (x.getNumerator() >= x.getDenominator() * y);
-}
-bool operator>=(int& y, Rational& x)
-{
-  return (x.getDenominator() * y >= x.getNumerator());
-}
+
 int main()
 {
-  return 0;
+  Rational a(2, -4);
+  Rational b(6, 3);
+  int c = 5;
+  std::cout << a << std::endl;
+  std::cout << a / c << std::endl;
+  if (a <= c)
+  {
+    std::cout << ++a << std::endl;
+  }
+  double d = 8.2;
+  if (a <= d)
+  {
+    std::cout << a + b << std::endl;
+  }
+
+  std::cout << a - b << std::endl;
+  std::cout << a * b << std::endl;
+  std::cout << a / b << std::endl;
 }
