@@ -1,6 +1,5 @@
 #include <iostream>
-#include <algorithm>
-
+#include <numeric>
 struct Rational
 {
 private:
@@ -17,22 +16,9 @@ public:
   {
     return denominator_;
   }
-
-  static int GCD(int a, int b)
-  {
-    while (a != 0 && b != 0)
-    {
-      if (a > b)
-        a %= b;
-      else
-        b %= a;
-    }
-
-    return a | b;
-  }
   void Simplify()
   {
-    auto a = std::abs(GCD(getDenominator(), getNumerator()));
+    auto a = std::abs(std::gcd(getDenominator(), getNumerator()));
     numerator_ /= a;
     denominator_ /= a;
   }
@@ -60,13 +46,13 @@ public:
     return (double)this->numerator_ / (double)this->denominator_;
   }
 
-  Rational operator+(Rational& b)
+  Rational operator+(Rational const& b)
   {
     return Rational(this->numerator_ * b.denominator_ + b.numerator_ * this->denominator_,
                     this->denominator_ * b.denominator_);
   }
 
-  Rational operator-(Rational& b)
+  Rational operator-(Rational const& b)
   {
     return Rational(this->numerator_ * b.denominator_ - b.numerator_ * this->denominator_,
                     this->denominator_ * b.denominator_);
@@ -77,7 +63,7 @@ public:
     return Rational(this->numerator_ * b.numerator_, this->denominator_ * b.denominator_);
   }
 
-  Rational operator/(Rational& b)
+  Rational operator/(Rational const& b)
   {
     if (this->denominator_ == 0 || b.denominator_ == 0 || this->numerator_ == 0 || b.numerator_ == 0)
     {
@@ -115,28 +101,28 @@ public:
     return tmp;
   }
 
-  bool operator>(Rational& b)
+  bool operator>(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() > b.getNumerator() * this->getDenominator())
       return true;
     else
       return false;
   }
-  bool operator>=(Rational& b)
+  bool operator>=(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() >= b.getNumerator() * this->getDenominator())
       return true;
     else
       return false;
   }
-  bool operator==(Rational& b)
+  bool operator==(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() == b.getNumerator() * this->getDenominator())
       return true;
     else
       return false;
   }
-  bool operator<=(Rational& b)
+  bool operator<=(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() <= b.getNumerator() * this->getDenominator())
       return true;
@@ -150,7 +136,7 @@ public:
     else
       return false;
   }
-  bool operator!=(Rational& b)
+  bool operator!=(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() != b.getNumerator() * this->getDenominator())
       return true;
