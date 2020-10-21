@@ -92,6 +92,30 @@ public:
     --(*this);
     return tmp;
   }
+  bool operator>(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() > x.getNumerator() * this->getDenominator());
+  }
+  bool operator<(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() < x.getNumerator() * this->getDenominator());
+  }
+  bool operator==(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() == x.getNumerator() * this->getDenominator());
+  }
+  bool operator!=(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() != x.getNumerator() * this->getDenominator());
+  }
+  bool operator<=(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() <= x.getNumerator() * this->getDenominator());
+  }
+  bool operator>=(Rational& x)
+  {
+    return (this->getNumerator() * x.getDenominator() >= x.getNumerator() * this->getDenominator());
+  }
 };
 std::ostream& operator<<(std::ostream& out, const Rational& x)
 {
@@ -104,6 +128,8 @@ int main()
 {
   Rational a(2, -4);
   Rational b(6, 3);
+  if (a < b)
+    std::cout << "a<b" << std::endl;
   int c = 5;
   std::cout << a << std::endl;
   std::cout << a / c << std::endl;
