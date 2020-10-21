@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <numeric>
 
 struct Rational
 {
@@ -21,13 +22,13 @@ public:
 public:
   void Reduce()
   {
-    auto a = std::abs(std::__gcd(getDenominator(), getNumerator()));
+    auto a = std::abs(std::gcd(getNumerator(), getDenominator()));
     numerator_ /= a;
     denominator_ /= a;
   }
 
 public:
-  Rational(int x, int y = 1)
+  Rational(int x, int y)
   {
     if (y < 0)
     {
@@ -45,21 +46,21 @@ public:
   {
     return (double)this->getNumerator() / this->getDenominator();
   }
-  Rational operator+(Rational& x)
+  Rational operator+(Rational const& x)
   {
     return Rational(this->getNumerator() * x.getDenominator() + x.getNumerator() * this->getDenominator(),
                     this->getDenominator() * x.getDenominator());
   }
-  Rational operator-(Rational& x)
+  Rational operator-(Rational const& x)
   {
     return Rational(this->getNumerator() * x.getDenominator() - x.getNumerator() * this->getDenominator(),
                     this->getDenominator() * x.getDenominator());
   }
-  Rational operator*(Rational& x)
+  Rational operator*(Rational const& x)
   {
     return Rational(this->getNumerator() * x.getNumerator(), this->getDenominator() * x.getDenominator());
   }
-  Rational operator/(Rational& x)
+  Rational operator/(Rational const& x)
   {
     if (this->getDenominator() == 0 || x.getDenominator() == 0 || this->getNumerator() == 0 || x.getNumerator() == 0)
     {
@@ -92,27 +93,27 @@ public:
     --(*this);
     return tmp;
   }
-  bool operator>(Rational& x)
+  bool operator>(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() > x.getNumerator() * this->getDenominator());
   }
-  bool operator<(Rational& x)
+  bool operator<(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() < x.getNumerator() * this->getDenominator());
   }
-  bool operator==(Rational& x)
+  bool operator==(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() == x.getNumerator() * this->getDenominator());
   }
-  bool operator!=(Rational& x)
+  bool operator!=(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() != x.getNumerator() * this->getDenominator());
   }
-  bool operator<=(Rational& x)
+  bool operator<=(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() <= x.getNumerator() * this->getDenominator());
   }
-  bool operator>=(Rational& x)
+  bool operator>=(Rational const& x)
   {
     return (this->getNumerator() * x.getDenominator() >= x.getNumerator() * this->getDenominator());
   }
@@ -120,7 +121,6 @@ public:
 std::ostream& operator<<(std::ostream& out, const Rational& x)
 {
   out << x.getNumerator() << "/" << x.getDenominator();
-
   return out;
 }
 
@@ -142,7 +142,6 @@ int main()
   {
     std::cout << a + b << std::endl;
   }
-
   std::cout << a - b << std::endl;
   std::cout << a * b << std::endl;
   std::cout << a / b << std::endl;
