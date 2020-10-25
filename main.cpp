@@ -18,7 +18,7 @@ public:
   }
   void Simplify()
   {
-    auto a = std::abs(std::gcd(getDenominator(), getNumerator()));
+    auto a = std::gcd(getDenominator(), getNumerator());
     numerator_ /= a;
     denominator_ /= a;
   }
