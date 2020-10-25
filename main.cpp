@@ -22,7 +22,7 @@ public:
 public:
   void Reduce()
   {
-    auto a = std::abs(std::gcd(getNumerator(), getDenominator()));
+    auto a = std::gcd(getNumerator(), getDenominator());
     numerator_ /= a;
     denominator_ /= a;
   }
@@ -35,7 +35,6 @@ public:
       x *= -1;
       y *= -1;
     }
-
     numerator_ = x;
     denominator_ = y;
     Reduce();
@@ -118,7 +117,7 @@ public:
     return (this->getNumerator() * x.getDenominator() >= x.getNumerator() * this->getDenominator());
   }
 };
-std::ostream& operator<<(std::ostream& out, const Rational& x)
+std::ostream& operator<<(std::ostream& out, Rational const& x)
 {
   out << x.getNumerator() << "/" << x.getDenominator();
   return out;
@@ -127,6 +126,7 @@ std::ostream& operator<<(std::ostream& out, const Rational& x)
 int main()
 {
   Rational a(2, -4);
+  std::cout << a << std::endl;
   Rational b(6, 3);
   if (a < b)
     std::cout << "a<b" << std::endl;
