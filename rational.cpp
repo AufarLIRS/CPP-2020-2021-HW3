@@ -1,7 +1,5 @@
 #include "rational.h"
 #include <numeric>
-#include <cmath>
-#include <cstdio>
 
 int Rational::getNumerator() const
 {
