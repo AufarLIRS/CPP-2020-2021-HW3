@@ -16,7 +16,6 @@ public:
   operator double() const;
   int getNumerator() const;
   int getDenominator() const;
-  bool IsNan(Rational const& x);
   friend Rational operator+(Rational const& x, Rational const& y);
   friend Rational operator-(Rational const& x, Rational const& y);
   friend Rational operator*(Rational const& x, Rational const& y);

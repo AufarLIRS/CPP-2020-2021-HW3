@@ -8,6 +8,7 @@ int main()
   Rational test(1, -2);
   Rational test1(-5, -25);
   std::cout << test / test1 << std::endl;
+  std::cout << test * test1 << std::endl;
   Rational a(2, -4);
   std::cout << a << std::endl;
   Rational b(6, 3);

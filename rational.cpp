@@ -17,10 +17,6 @@ void Rational::Reduce()
   numerator_ /= a;
   denominator_ /= a;
 }
-bool Rational::IsNan(Rational const& x)
-{
-  return (x.getDenominator() == 0);
-}
 Rational::Rational(int x, int y)
 {
   if (y < 0)
