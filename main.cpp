@@ -1,6 +1,5 @@
 #include <iostream>
 #include <numeric>
-#include <cassert>
 
 class Rational
 {
@@ -18,57 +17,48 @@ private:
 
   Rational(int numerator = 0, int denominator = 1)
   {
-    assert(denominator != 0);
     numerator_ = numerator;
     denominator_ = denominator;
     reduce();
   }
 
-  int getNumerator()
+  int getNumerator() const
   {
     return numerator_;
   }
 
-  int getDenominator()
+  int getDenominator() const
   {
     return denominator_;
   }
 
-  /* Сначала получаем numerator_ и denominator_, потом
-    проверяем denominator на 0 и в конце сокращаем дробь на НОД.
-    getRez - выводит конечный результат.*/
-  double getRez()
+  operator double() const
   {
-    return static_cast<double>(getNumerator()) / getDenominator();
-  }
-
-  operator double()
-  {
-    return (double)getRez();
+    return (double)getNumerator() / getDenominator();
   }
 
   //сложения (+)
-  Rational operator+(Rational& count)
+  Rational operator+(const Rational& count) const
   {
     return Rational(getNumerator() * count.getDenominator() + count.getNumerator() * getDenominator(),
                     getDenominator() * count.getDenominator());
   }
 
   //вычитания (-)
-  Rational operator-(Rational& count)
+  Rational operator-(const Rational& count) const
   {
     return Rational(getNumerator() * count.getDenominator() - count.getNumerator() * getDenominator(),
                     getDenominator() * count.getDenominator());
   }
 
   //умножения (*)
-  Rational operator*(Rational& count)
+  Rational operator*(const Rational& count) const
   {
     return Rational(getNumerator() * count.getNumerator(), getDenominator() * count.getDenominator());
   }
 
   //деления (/)
-  Rational operator/(Rational& count)
+  Rational operator/(const Rational& count) const
   {
     return Rational(getNumerator() * count.getDenominator(), getDenominator() * count.getNumerator());
   }
@@ -76,7 +66,7 @@ private:
   //инкремент (префиксный и постфиксный)
   Rational& operator++()
   {
-    this->numerator_ = (getNumerator() + getDenominator());
+    numerator_ += denominator_;
     return *this;
   }
 
@@ -90,9 +80,10 @@ private:
   //декремент (префиксный и постфиксный)
   Rational& operator--()
   {
-    this->numerator_ = (getNumerator() - getDenominator());
+    numerator_ -= denominator_;
     return *this;
   }
+
   Rational operator--(int)
   {
     Rational k(*this);
@@ -101,37 +92,37 @@ private:
   }
 
   //сравнения (>)
-  bool operator>(Rational& count)
+  bool operator>(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() > count.getNumerator() * getDenominator());
   }
 
   //сравнения (<)
-  bool operator<(Rational& count)
+  bool operator<(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() < count.getNumerator() * getDenominator());
   }
 
   //сравнения (==)
-  bool operator==(Rational& count)
+  bool operator==(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() == count.getNumerator() * getDenominator());
   }
 
   //сравнения (!=)
-  bool operator!=(Rational& count)
+  bool operator!=(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() != count.getNumerator() * getDenominator());
   }
 
   //сравнения (<=)
-  bool operator<=(Rational& count)
+  bool operator<=(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() <= count.getNumerator() * getDenominator());
   }
 
   //сравнения (=>)
-  bool operator>=(Rational& count)
+  bool operator>=(const Rational& count) const
   {
     return (getNumerator() * count.getDenominator() >= count.getNumerator() * getDenominator());
   }
