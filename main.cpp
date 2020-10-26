@@ -18,4 +18,15 @@ int main()
   cout << s << endl;
   cout << s-- << endl;
   cout << d + 2 << endl;
+  Rational g = Rational(33, 11);
+  cout << "33/11 = " << g << endl;
+  Rational c = Rational(0, 5);
+  cout << "0/5 = " << c << endl;
+  Rational f = Rational(13, 13);
+  cout << "13/13 = " << f << endl;
+  Rational t = Rational(-1, -5);
+  cout << "-1/-5 = " << t << endl;
+  Rational l = Rational(1, -5);
+  cout << "1/-5 = " << l << endl;
+  cout << "0/5*(1/-5)==" << c * l << endl;
 }

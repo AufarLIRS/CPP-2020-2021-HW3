@@ -1,7 +1,8 @@
 #include "rational.h"
 #include <cmath>
+#include <numeric>
 
-int Rational::NOD(int n, int d)
+/*int Rational::NOD(int n, int d)
 {
   n = abs(n);
   d = abs(d);
@@ -15,7 +16,7 @@ int Rational::NOD(int n, int d)
       d -= n;
   }
   return n;
-}
+}*/
 
 Rational::Rational(int n, int d)
 {
@@ -23,29 +24,23 @@ Rational::Rational(int n, int d)
   {
     numerator_ = 0;
     denominator_ = 1;
+    return;
   }
   else
   {
-    if (n % d == 0)
-    {
-      n = n / d;
-      d = 1;
-    }
-    else
-    {
-      int k = NOD(n, d);
-      n /= k;
-      d /= k;
-    }
-    if (n < 0 && d < 0)
-    {
-      n *= -1;
-      d *= -1;
-    }
-    numerator_ = n;
-    denominator_ = d;
+    int k = std::gcd(n, d);
+    n /= k;
+    d /= k;
   }
-};
+  if (n < 0 && d < 0)
+  {
+    n *= -1;
+    d *= -1;
+  }
+  numerator_ = n;
+  denominator_ = d;
+}
+
 Rational::operator double() const
 {
   return double(this->numerator_) / this->denominator_;
