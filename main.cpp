@@ -1,130 +1,13 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
-
-struct Rational
-{
-private:
-  int numerator_;
-  int denominator_;
-
-public:
-  int getNumerator() const
-  {
-    return numerator_;
-  }
-
-  int getDenominator() const
-  {
-    return denominator_;
-  }
-
-public:
-  void Reduce()
-  {
-    auto a = std::gcd(getNumerator(), getDenominator());
-    numerator_ /= a;
-    denominator_ /= a;
-  }
-
-public:
-  Rational(int x, int y)
-  {
-    if (y < 0)
-    {
-      x *= -1;
-      y *= -1;
-    }
-    numerator_ = x;
-    denominator_ = y;
-    Reduce();
-  }
-
-public:
-  operator double()
-  {
-    return (double)this->getNumerator() / this->getDenominator();
-  }
-  Rational operator+(Rational const& x)
-  {
-    return Rational(this->getNumerator() * x.getDenominator() + x.getNumerator() * this->getDenominator(),
-                    this->getDenominator() * x.getDenominator());
-  }
-  Rational operator-(Rational const& x)
-  {
-    return Rational(this->getNumerator() * x.getDenominator() - x.getNumerator() * this->getDenominator(),
-                    this->getDenominator() * x.getDenominator());
-  }
-  Rational operator*(Rational const& x)
-  {
-    return Rational(this->getNumerator() * x.getNumerator(), this->getDenominator() * x.getDenominator());
-  }
-  Rational operator/(Rational const& x)
-  {
-    if (this->getDenominator() == 0 || x.getDenominator() == 0 || this->getNumerator() == 0 || x.getNumerator() == 0)
-    {
-      return Rational(1, 0);
-    }
-    else
-    {
-      return Rational(this->getNumerator() * x.getDenominator(), this->getDenominator() * x.getNumerator());
-    }
-  }
-  Rational& operator++()
-  {
-    this->numerator_ = (this->getNumerator() + this->getDenominator());
-    return *this;
-  }
-  Rational operator++(int)
-  {
-    Rational tmp(*this);
-    ++(*this);
-    return tmp;
-  }
-  Rational& operator--()
-  {
-    this->numerator_ = (this->getNumerator() - this->getDenominator());
-    return *this;
-  }
-  Rational operator--(int)
-  {
-    Rational tmp(*this);
-    --(*this);
-    return tmp;
-  }
-  bool operator>(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() > x.getNumerator() * this->getDenominator());
-  }
-  bool operator<(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() < x.getNumerator() * this->getDenominator());
-  }
-  bool operator==(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() == x.getNumerator() * this->getDenominator());
-  }
-  bool operator!=(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() != x.getNumerator() * this->getDenominator());
-  }
-  bool operator<=(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() <= x.getNumerator() * this->getDenominator());
-  }
-  bool operator>=(Rational const& x)
-  {
-    return (this->getNumerator() * x.getDenominator() >= x.getNumerator() * this->getDenominator());
-  }
-};
-std::ostream& operator<<(std::ostream& out, Rational const& x)
-{
-  out << x.getNumerator() << "/" << x.getDenominator();
-  return out;
-}
+#include "rational.h"
 
 int main()
 {
+  Rational test(1, -2);
+  Rational test1(-5, -25);
+  std::cout << test / test1 << std::endl;
   Rational a(2, -4);
   std::cout << a << std::endl;
   Rational b(6, 3);
