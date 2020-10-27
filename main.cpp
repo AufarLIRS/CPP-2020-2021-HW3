@@ -5,6 +5,13 @@ struct Rational
 private:
   int numerator_;
   int denominator_;
+  
+  void Simplify()
+  {
+    auto a = std::gcd(getDenominator(), getNumerator());
+    numerator_ /= a;
+    denominator_ /= a;
+  }
 
 public:
   int getNumerator() const
@@ -16,12 +23,7 @@ public:
   {
     return denominator_;
   }
-  void Simplify()
-  {
-    auto a = std::gcd(getDenominator(), getNumerator());
-    numerator_ /= a;
-    denominator_ /= a;
-  }
+  
 
   Rational(int n, int m)
   {
@@ -58,7 +60,7 @@ public:
                     this->denominator_ * b.denominator_);
   }
 
-  Rational operator*(Rational& b)
+  Rational operator*(Rational const& b)
   {
     return Rational(this->numerator_ * b.numerator_, this->denominator_ * b.denominator_);
   }
@@ -129,7 +131,7 @@ public:
     else
       return false;
   }
-  bool operator<(Rational& b)
+  bool operator<(Rational const& b)
   {
     if (this->getNumerator() * b.getDenominator() < b.getNumerator() * this->getDenominator())
       return true;
