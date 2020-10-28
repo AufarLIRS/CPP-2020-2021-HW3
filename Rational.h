@@ -33,8 +33,6 @@ public:
   Rational& operator++();
   Rational& operator--();
 
-  bool operator==(const Rational&) const;
-  bool operator==(int) const;
   friend bool operator==(int, const Rational&);
   bool operator!=(const Rational&) const;
   bool operator!=(int) const;
@@ -52,7 +50,6 @@ public:
   bool operator<=(int) const;
   friend bool operator<=(int, const Rational&);
 
-  Rational pow(unsigned exp) const;
   Rational inverse() const;
   void simplify();
 };

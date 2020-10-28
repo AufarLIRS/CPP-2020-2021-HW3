@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include "Rational.h"
-
-void validate(int, int);
-
-int gcd(int, int);
+#include <algorithm>
+#include <numeric>
 
 Rational::Rational()
 {
@@ -12,11 +10,10 @@ Rational::Rational()
   denominator_ = 1;
 }
 
-Rational::Rational(int p, int Q)
+Rational::Rational(int numer, int denom)
 {
-  validate(p, Q);
-  numerator_ = p;
-  denominator_ = Q;
+  numerator_ = numer;
+  denominator_ = denom;
 }
 void Rational::simplify()
 {
@@ -25,7 +22,7 @@ void Rational::simplify()
     denominator_ *= -1;
     numerator_ *= -1;
   }
-  int denom = gcd(denominator_, numerator_);
+  int denom = std::gcd(denominator_, numerator_);
   denominator_ /= denom;
   numerator_ /= denom;
 }
@@ -298,25 +295,6 @@ Rational Rational::inverse() const
   Rational temp(this->denominator_, this->numerator_);
 
   return temp;
-}
-
-void validate(int p, int q)
-{
-  p++;
-  if (q == 0)
-  {
-    throw "Zero Denominator";
-  }
-}
-
-int gcd(int p, int q)
-{
-  // Алгоритма Евклида
-  if (q == 0)
-  {
-    return p;
-  }
-  return gcd(q, p % q);
 }
 
 int main()
