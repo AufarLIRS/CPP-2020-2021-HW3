@@ -100,32 +100,6 @@ Rational& Rational::operator--()
   return *this;
 }
 
-bool Rational::operator==(const Rational& rat) const
-{
-  bool result;
-
-  if ((this->numerator_ == rat.numerator_) && (this->denominator_ == rat.denominator_))
-  {
-    result = true;
-  }
-  else
-  {
-    result = false;
-  }
-
-  return result;
-}
-
-bool Rational::operator==(int num) const
-{
-  bool result;
-  Rational temp(num);
-
-  result = (*this == temp);
-
-  return result;
-}
-
 bool operator==(int num, const Rational& rat)
 {
   bool result;
