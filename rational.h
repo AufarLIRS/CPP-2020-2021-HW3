@@ -12,10 +12,7 @@ public:
     Rational(const Rational&);
     Rational(int numerator, int denominator);
 
-    operator double() const
-    {
-        return (double)this->numerator_ / this->denominator_;
-    };
+    operator double() const;
     Rational& operator++();
     Rational& operator--();
     Rational operator++(int);

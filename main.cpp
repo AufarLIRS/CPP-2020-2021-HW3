@@ -18,6 +18,11 @@ Rational::Rational(const Rational& rational)
     denominator_ = rational.denominator_;
 }
 
+Rational::operator double() const
+{
+    return (double) numerator_/ denominator_;
+}
+
 Rational operator+(const Rational& l, const Rational& r)
 {
     int numerator = l.numerator_ * r.denominator_ + r.numerator_ * l.denominator_;
@@ -38,8 +43,7 @@ Rational operator*(const Rational& l, const Rational& r)
 {
     int numerator = l.numerator_ * r.numerator_;
     int denominator = l.denominator_ * r.denominator_;
-    int gcd = std::gcd(numerator, denominator);
-    return Rational(numerator / gcd, denominator / gcd);
+    return Rational(numerator, denominator);
 
 }
 
@@ -93,32 +97,11 @@ bool Rational::operator<=(Rational const &right) const
     return !(*this > right);
 }
 
-bool Rational::operator<=(int num) const
-{
-    Rational temp(num, 1);
-    return (*this <= num);
-}
-
-bool operator<=(int num, Rational& rational)
-{
-    return (rational >= num);
-}
-
 bool Rational::operator>=(const Rational  &right) const
 {
     return !(*this < right);
 }
 
-bool Rational::operator>=(int num) const
-{
-    Rational temp(num, 1);
-    return (*this >= temp);
-}
-
-bool operator>=(int num,const Rational& rational)
-{
-    return (rational <= num);
-}
 
 bool Rational::operator<(const Rational & right) const
 {
@@ -129,19 +112,6 @@ bool Rational::operator<(const Rational & right) const
     return false;
 }
 
-bool Rational::operator<(int right) const
-{
-    Rational temp(right, 1);
-
-    return (*this < temp);
-}
-
-bool operator<(int num, const Rational& rational)
-{
-    return (rational > num);
-}
-
-
 bool Rational::operator>(const Rational & right) const
 {
     if ((this->numerator_ / this->denominator_) > (right.numerator_ / right.denominator_))
@@ -149,18 +119,6 @@ bool Rational::operator>(const Rational & right) const
         return true;
        }
     return false;
-}
-
-bool Rational::operator>(int right) const
-{
-    Rational temp(right, 1);
-
-    return (*this > temp);
-}
-
-bool operator>(int num, const Rational& rational)
-{
-    return (rational < num);
 }
 
 std::ostream& operator<<(std::ostream& out, const Rational& rational)
