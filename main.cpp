@@ -8,6 +8,8 @@ int main()
 {
     Rational g = Rational(33, 11);
     cout << g << endl;
+    g++;
+    cout << g << endl;
     Rational c = Rational(0, 5);
     cout << c << endl;
     Rational f = Rational(13, 13);

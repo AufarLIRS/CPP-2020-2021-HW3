@@ -29,12 +29,12 @@ Rational::operator double() const
     return double(this->numerator) / this->denominator;
 }
 
-Rational Rational::operator++()
+Rational& Rational::operator++()
 {
     this->numerator += this->denominator;
     return *this;
 }
-Rational Rational::operator--()
+Rational& Rational::operator--()
 {
     this->numerator -= this->denominator;
     return *this;
@@ -53,21 +53,21 @@ Rational Rational::operator--(int)
     return tmp;
 };
 
-Rational Rational::operator+(const Rational& s)
+Rational Rational::operator+(Rational const& s)
 {
     return Rational(this->numerator * s.denominator + this->denominator * s.numerator,
                     this->denominator * s.denominator);
 }
-Rational Rational::operator-(Rational s)
+Rational Rational::operator-(Rational const& s)
 {
     return Rational(this->numerator * s.denominator - this->denominator * s.numerator,
                     this->denominator * s.denominator);
 }
-Rational Rational::operator*(Rational s)
+Rational Rational::operator*(Rational const& s)
 {
     return Rational(this->numerator * s.numerator, this->denominator * s.denominator);
 }
-Rational Rational::operator/(Rational s)
+Rational Rational::operator/(Rational const& s)
 {
     return Rational(this->numerator * s.denominator, this->denominator * s.numerator);
 }
