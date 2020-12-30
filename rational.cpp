@@ -2,6 +2,7 @@
 #include <cmath>
 #include <numeric>
 
+
 Rational::Rational(int n, int d)
 {
     if (n == 0)
