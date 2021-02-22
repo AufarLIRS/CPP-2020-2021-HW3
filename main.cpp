@@ -11,15 +11,18 @@ private:
 public:
     Rational(T num = 0, T den = 1)
     {
-        T numer(evclidAlgNOD(num, den));
-
-        if (numer != 1)
+        if (std::is_integral<T>::value == 1)
         {
-            num = num / numer;
-            den = den / numer;
+            T numer(evclidAlgNOD(num, den));
+
+            if (numer != 1)
+            {
+                num = num / numer;
+                den = den / numer;
+            }
+            this->denominator = den;
+            this->numerator = num;
         }
-        this->denominator = den;
-        this->numerator = num;
     }
     static T evclidAlgNOD(T a, T b)
     {
