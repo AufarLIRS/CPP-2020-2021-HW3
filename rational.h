@@ -32,4 +32,4 @@ public:
   bool operator>=(Rational const& x);
   friend std::ostream& operator<<(std::ostream& out, Rational const& x);
 };
-#endif // RATIONAL_H
+#endif  // RATIONAL_H
